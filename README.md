@@ -27,9 +27,27 @@ wsl
 
 then to install GridDB follow the installation instruction on [https://docs.griddb.net/latest/gettingstarted/using-apt/#install-with-apt-get](https://docs.griddb.net/latest/gettingstarted/using-apt/#install-with-apt-get).
 
+## Node.js
 
+Installation[^2] Node.js 18 LTS
 
+```
+curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash - &&\
+sudo apt-get install -y nodejs
+```
+
+We will be using [griddb node-api](https://github.com/griddb/node-api) to connect our application with GridDB but before that wes should install the [griddb c client](https://github.com/griddb/c_client).
+
+The GridDB C Client provides a C interface for GridDB.
+
+```
+wget https://github.com/griddb/c_client/releases/download/v5.0.0/griddb-c-client_5.0.0_amd64.deb
+sudo dpkg -i griddb-c-client_5.0.0_amd64.deb
+```
+
+### GridDB node-api
 
 
 
 [^1]: https://ubuntu.com/blog/ubuntu-wsl-enable-systemd
+[^2]: https://github.com/nodesource/distributions/blob/master/README.md
