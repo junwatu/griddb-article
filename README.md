@@ -2,14 +2,30 @@
 
 ## Installation
 
-Ubuntu 18.04 WSL 2 on Windows 11
+OS Ubuntu 18.04 WSL 2 on Windows 11
 
-[https://docs.griddb.net/latest/gettingstarted/using-apt/#install-with-apt-get](https://docs.griddb.net/latest/gettingstarted/using-apt/#install-with-apt-get)
+⚠️ GridDB deb package uses `systemd` but Ubuntu 18.04 on WSL 2 Windows 11 uses `SysVinit` so you need to enable `systemd` on Ubuntu WSL by editing file `/etc/wsl.conf` (create it if this file doesn't exist)
 
-⚠️ GridDB `deb` package uses `systemd` but Ubuntu 18.04 on WSL 2 Windows 11 uses SysVinit so you need to enable `systemd` on Ubuntu WSL by editing file `/etc/wsl.conf` or create it if it doesn't exist.
+Inside your Ubuntu instance, add the following modification to `/etc/wsl.conf`
 
 ```
 [boot]
 systemd=true
 ```
+
+Open Windows terminal to restart wsl with the following command
+
+```
+wsl --shutdown
+```
+
+then start wsl again with the command
+
+```
+wsl
+```
+
+then to install GridDB follow the installation instruction on [https://docs.griddb.net/latest/gettingstarted/using-apt/#install-with-apt-get](https://docs.griddb.net/latest/gettingstarted/using-apt/#install-with-apt-get).
+
+
 
