@@ -47,7 +47,46 @@ sudo dpkg -i griddb-c-client_5.0.0_amd64.deb
 
 ### GridDB node-api
 
+GridDB node-api is built using node-addon-api so to using it you need to install it from npm or clone the GridDB node-api repository
+
+```
+git clone git@github.com:griddb/node-api.git
+cd node-api
+npm install
+```
+
+if there is an error message `gyp ERR! stack Error: not found: make` then you should install the `build-essentials` package in Ubuntu and if everything success you will get a `griddb.node`
+
+```zsh
+equan@GenAI:~/node-api$ ls -l
+total 1200
+-rw-r--r-- 1 equan equan 181395 Mar  9 05:09 CLA_rev1.1.pdf
+-rw-r--r-- 1 equan equan  11358 Mar  9 05:09 LICENSE
+-rw-r--r-- 1 equan equan   1936 Mar  9 05:09 README-NPM.md
+-rw-r--r-- 1 equan equan   2857 Mar  9 05:09 README.md
+-rw-r--r-- 1 equan equan   2178 Mar  9 05:09 binding.gyp
+drwxr-xr-x 5 equan equan   4096 Mar  9 05:23 build
+drwxr-xr-x 3 equan equan   4096 Mar  9 05:09 docs
+-rw-r--r-- 1 equan equan   1846 Mar  9 05:09 griddb-node-api.js
+-rwxr-xr-x 3 equan equan 982040 Mar  9 05:24 griddb.node
+drwxr-xr-x 2 equan equan   4096 Mar  9 05:09 include
+drwxr-xr-x 3 equan equan   4096 Mar  9 05:10 node_modules
+-rw-r--r-- 1 equan equan    852 Mar  9 05:23 package-lock.json
+-rw-r--r-- 1 equan equan    826 Mar  9 05:09 package.json
+drwxr-xr-x 2 equan equan   4096 Mar  9 05:09 sample
+drwxr-xr-x 2 equan equan   4096 Mar  9 05:09 src
+```
+
+Before code Node.js application you need to include the `gridbd.node` in `NODE_PATH` with this command
+
+```
+equan@GenAI:~/node-api$ export NODE_PATH=$(pwd)
+```
+
+
+
 
 
 [^1]: https://ubuntu.com/blog/ubuntu-wsl-enable-systemd
-[^2]: https://github.com/nodesource/distributions/blob/master/README.md
+[^2]: https://github.com/nodesource/distribution
+```s/blob/master/README.md
