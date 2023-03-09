@@ -77,16 +77,13 @@ drwxr-xr-x 2 equan equan   4096 Mar  9 05:09 sample
 drwxr-xr-x 2 equan equan   4096 Mar  9 05:09 src
 ```
 
-Before code Node.js application you need to include the `gridbd.node` in `NODE_PATH` with this command
+Before code the Node.js application you need to include the `gridbd.node` in `NODE_PATH` with this command
 
 ```
-equan@GenAI:~/node-api$ export NODE_PATH=$(pwd)
+$ export NODE_PATH=$(pwd)
 ```
-
-
-
 
 
 [^1]: https://ubuntu.com/blog/ubuntu-wsl-enable-systemd
 [^2]: https://github.com/nodesource/distribution
-```s/blob/master/README.md
+
