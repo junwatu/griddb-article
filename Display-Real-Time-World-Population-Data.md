@@ -24,10 +24,8 @@ The application server we make is API-based, and Node.js will interact with Grid
 ### Front end Development
 We use React.js to create the user interface. To display the world population data visually, we'll use Mapbox GL JS, a powerful mapping library. This library enables the creation of interactive, customizable maps. We'll integrate Mapbox GL JS with our React application to render a world map with markers or overlays representing the population data.
 
-Before we code the application, we need to set up the software and tools for development.
-
 ## Setup
-For this project, we use Windows 11 22H2 for development. 
+Before we code the application, we need to set up the software and tools for development. For this project, we use Windows 11 22H2 for development. 
 
 ### Node.js LTS
 We can use a windows package manager like [winget](https://github.com/microsoft/winget-cli) or just install Node.js 18 LTS version with a windows installer from [nodejs.org](https://nodejs.org/dist/v18.15.0/node-v18.15.0-x64.msi)
