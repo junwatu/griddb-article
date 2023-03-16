@@ -1,16 +1,14 @@
-# Displaying World Population Data Using Mapbox GL JS, Node.js and GridDB
-
-## The Project
+# Display World Population Data With Mapbox, Node.js and GridDB
 
 In this blog, we will show you how to display world population data from [worldometers](https://www.worldometers.info/) using React, Mapbox GL JS, Node.js, and GridDB with a TimeSeries container.
 
 The flow for this project can be breakdown into a few steps:
 
-### Data Acquisition
+## Data Acquisition
 
 First, we need to get real-time data from [worldometers](https://www.worldometers.info/). This can be done by scrapping the website and getting the data that we need. The data will be extracted at regular intervals to keep it up-to-date.
 
-### Back-end Development
+## Back-end Development
 
 We will use Node.js to code the server-side application server.
 
@@ -18,7 +16,7 @@ We will use Node.js to code the server-side application server.
 
 The application server we make is API-based, and Node.js will interact with GridDB for data storage, handle retrieval data from worldometer, and handle requests and responses from the client UI.
 
-### Front end Development
+## Front end Development
 
 We use React.js to create the user interface. To display the world population data visually, we'll use Mapbox GL JS, a powerful mapping library. This library enables the creation of interactive, customizable maps. We'll integrate Mapbox GL JS with our React application to render a world map with markers or overlays representing the population data.
 
