@@ -22,6 +22,8 @@ We use React.js to create the user interface. To display the world population da
 
 Before we code the application, we need to set up the software and tools for development. We use Ubuntu 20.04 on WSL 2 on Windows 11 OS.
 
+> WSL only available on Windows 10 version 2004 and higher (Build 19041 and higher). Go ahead to this [link](https://learn.microsoft.com/en-us/windows/wsl/install) for a new WSL installation.
+
 ## GridDB
 
 [GridDB](https://griddb.net/en/)™ is a highly scalable, in-memory NoSQL time-series database optimized for IoT and Big Data. What's important to note is it has two types of container categories:
@@ -115,7 +117,7 @@ drwxr-xr-x 2 equan equan   4096 Mar  9 05:09 sample
 drwxr-xr-x 2 equan equan   4096 Mar  9 05:09 src
 ```
 
-Before code the Node.js application you need to include the `gridbd.node` in `NODE_PATH` with this command
+Before we code the Node.js application you need to include the `gridbd.node` in `NODE_PATH` with this command
 
 ```zsh
 export NODE_PATH=$(pwd)
