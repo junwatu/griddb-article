@@ -1,3 +1,5 @@
+# Displaying World Population Data Using Mapbox GL JS, Node.js and GridDB
+
 [GridDB](https://griddb.net/en/)™ is a highly scalable, in-memory NoSQL time-series database optimized for IoT and Big Data. What's important to note is it has two types of container categories:
 
 ### Collection Containers
@@ -46,10 +48,10 @@ The reason why we need to install [Docker Desktop](https://www.docker.com/produc
 
 To install GridDB via docker, you can use this command on the windows terminal
 
-```bash
+```powershell
 docker pull griddbnet/griddb
 ```
 
-```
+```powershell
 docker run --hostname=localhost -d -t  griddbnet/griddb
 ```
