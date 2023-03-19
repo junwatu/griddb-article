@@ -1,4 +1,4 @@
-# Display World Population Data With Mapbox, Node.js and GridDB
+# Visualize Global Population Data with Mapbox, Node.js, and GridDB: A Step-by-Step Guide
 
 In this blog, we will show you how to display world population data from [worldometers](https://www.worldometers.info/) using React, Mapbox GL JS, Node.js, and GridDB.
 
@@ -216,9 +216,7 @@ There are a few ways to get data from a website:
 1. By using their API.
 2. By scrapping the website.
 
-Unfortunately, Worldometers does not provide API, so our last option is to scrap the website.
-
-One thing to note is Worldometers has dynamic data, meaning they provide real-time data. You cannot use JavaScript libraries such as Cheerio for data extraction. The best choice is to use Puppeteer to get such dynamic content.
+Unfortunately, Worldometers does not provide API, so our last option is to scrap the website. One thing to note is Worldometers has dynamic data, meaning they provide real-time data. You cannot use JavaScript libraries such as Cheerio for data extraction. The best choice is to use Puppeteer to get such dynamic content.
 
 > Puppeteer can be more resource-intensive as it launches a headless browser instance to render web pages. However, it offers more capabilities, such as handling dynamic content and user interactions.
 
@@ -254,6 +252,15 @@ const fetchWorldPopulationData = async () => {
 
   return popData;
 };
+```
+
+The data returned by `fetchWorldPopulationData` function is simply an object
+
+```js
+{
+  type: 'worldPopulationData',
+  worldPopulation: { population: '8,022,704,451' }
+}
 ```
 
 [^1]: https://ubuntu.com/blog/ubuntu-wsl-enable-systemd
