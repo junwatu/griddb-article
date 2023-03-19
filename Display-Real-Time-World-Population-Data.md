@@ -2,13 +2,15 @@
 
 In this blog, we will show you how to display world population data from [worldometers](https://www.worldometers.info/) using React, Mapbox GL JS, Node.js, and GridDB.
 
-[main_poject_flow_image]
+![main_poject_flow](assets/images/project-diagram.svg)
 
 The flow for this project can be breakdown into a few steps:
 
 ## Data Acquisition
 
-First, we need to get real-time data from [worldometers](https://www.worldometers.info/). This can be done by scrapping the website and getting the data that we need. The data will be extracted at regular intervals to keep it up-to-date.
+First, we need to get real-time data from [worldometers](https://www.worldometers.info/). This can be done by scrapping the website or use API and then getting the data that we need.
+
+The data will be extracted at regular intervals and then store it at the GridDB database. The data that stored can be use for further analysis, prediction, reporting, etc.
 
 ## Back-end Development
 
@@ -205,7 +207,7 @@ cd ../../
 pnpm --filter server install griddb-node-api express ws puppeteer
 ```
 
-### Data Acquisition
+### Data Extraction
 
 This project use data from Worldometers.
 
@@ -254,14 +256,21 @@ const fetchWorldPopulationData = async () => {
 };
 ```
 
-The data returned by `fetchWorldPopulationData` function is simply an object
+The data returned by `fetchWorldPopulationData` function is simply a JavaScript object
 
 ```js
 {
   type: 'worldPopulationData',
-  worldPopulation: { population: '8,022,704,451' }
+  worldPopulation: {
+    population: '8,022,758,957',
+    timestamp: 1679222700112
+  }
 }
 ```
+
+The code for data extraction of world population by country, is in the repository project. The output will be an array
+
+## Data Store
 
 [^1]: https://ubuntu.com/blog/ubuntu-wsl-enable-systemd
 [^2]: https://github.com/nodesource/distribution
