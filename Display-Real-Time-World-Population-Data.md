@@ -1,16 +1,16 @@
 # Visualize Global Population Data with Mapbox, Node.js, and GridDB: A Step-by-Step Guide
 
-In this blog, we will show you how to display world population data from [worldometers](https://www.worldometers.info/) using React, Mapbox GL JS, Node.js, and GridDB.
+This blog will show you how to display world population data from [worldometers](https://www.worldometers.info/) using React, Mapbox GL JS, Node.js, and GridDB.
 
 ![main_poject_flow](assets/images/project-diagram.svg)
 
-The flow for this project can be breakdown into a few steps:
+The development flow for this project can be breakdown into a few steps:
 
 ## Data Acquisition
 
-First, we need to get real-time data from [worldometers](https://www.worldometers.info/). This can be done by scrapping the website or use API and then getting the data that we need.
+First, we need to get real-time data from [worldometers](https://www.worldometers.info/). This can be done by scrapping the website or using API and then getting the data that we need.
 
-The data will be extracted at regular intervals and then store it at the GridDB database. The data that stored can be use for further analysis, prediction, reporting, etc.
+The data will be extracted at regular intervals and then stored in the GridDB database. The data stored can be used for further analysis, prediction, reporting, etc.
 
 ## Back-end Development
 
@@ -18,9 +18,9 @@ We will use Node.js to code the server-side application server.
 
 > Why Node.js? JavaScript is the lingua franca for full-stack application development, so it's the obvious choice.
 
-The application server we make is API-based, and Node.js will interact with GridDB for data storage, handle retrieval data from worldometer, and handle requests and responses from the client UI.
+The application server we make is API-based, and Node.js will interact with GridDB for data storage, handle retrieval data from worldometers, and handle requests and responses from the client UI.
 
-## Front end Development
+## Front-end Development
 
 We use React.js to create the user interface. To display the world population data visually, we'll use Mapbox GL JS, a powerful mapping library. This library enables the creation of interactive, customizable maps. We'll integrate Mapbox GL JS with our React application to render a world map with markers or overlays representing the population data.
 
@@ -28,7 +28,7 @@ We use React.js to create the user interface. To display the world population da
 
 Before we code the application, we need to set up the software and tools for development. We use Ubuntu 20.04 on WSL 2 on Windows 11 OS.
 
-> WSL only available on Windows 10 version 2004 and higher (Build 19041 and higher). Go ahead to this [link](https://learn.microsoft.com/en-us/windows/wsl/install) for a new WSL installation.
+> WSL is only available on Windows 10 version 2004 and higher (Build 19041 and higher). Go ahead to this [link](https://learn.microsoft.com/en-us/windows/wsl/install) for a new WSL installation.
 
 ## GridDB
 
@@ -44,7 +44,7 @@ This container is designed explicitly for managing time-series data, a sequence 
 
 ### Installation
 
-⚠️ GridDB deb package uses `systemd` but Ubuntu 20.04 on WSL 2 Windows 11 uses `SysVinit` so you need to enable `systemd` on Ubuntu WSL by editing file `/etc/wsl.conf` (create it if this file doesn't exist)
+⚠️ GridDB deb package uses `systemd`, but Ubuntu 20.04 on WSL 2 Windows 11 uses `SysVinit`, so you need to enable `systemd` on Ubuntu WSL by editing the file `/etc/wsl.conf` (create it if this file doesn't exist)
 
 Inside your Ubuntu instance, add the following modification to `/etc/wsl.conf`[^1]
 
@@ -53,19 +53,19 @@ Inside your Ubuntu instance, add the following modification to `/etc/wsl.conf`[^
 systemd=true
 ```
 
-Open Windows terminal to restart wsl with the following command
+Open the Windows terminal to restart wsl with the following command.
 
 ```powershell
 wsl --shutdown
 ```
 
-then start wsl again with the command
+Then start wsl again with the command.
 
 ```powershell
 wsl
 ```
 
-then to install GridDB follow the installation instruction on [https://docs.griddb.net/latest/gettingstarted/using-apt/#install-with-apt-get](https://docs.griddb.net/latest/gettingstarted/using-apt/#install-with-apt-get).
+To install GridDB follow the installation instruction on [https://docs.griddb.net/latest/gettingstarted/using-apt/#install-with-apt-get](https://docs.griddb.net/latest/gettingstarted/using-apt/#install-with-apt-get).
 
 Run GridDB and check if the service is running. Use this command
 
@@ -73,7 +73,7 @@ Run GridDB and check if the service is running. Use this command
 sudo systemctl status gridstore
 ```
 
-and if eveything ok you will get a message like this
+And if eveything ok you will get a message like this
 
 ```zsh
 ● gridstore.service - GridDB database server.
@@ -104,7 +104,7 @@ curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash - &&\
 sudo apt-get install -y nodejs
 ```
 
-We will be using [griddb node-api](https://github.com/griddb/node-api) to connect our application with GridDB but before that wes should install the [griddb c client](https://github.com/griddb/c_client). The GridDB C Client provides a C interface for GridDB.
+We will be using [griddb node-api](https://github.com/griddb/node-api) to connect our application with GridDB, but before that, we should install the [griddb c client](https://github.com/griddb/c_client). The GridDB C Client provides a C interface for GridDB.
 
 ```zsh
 wget https://github.com/griddb/c_client/releases/download/v5.0.0/griddb-c-client_5.0.0_amd64.deb
@@ -113,9 +113,9 @@ sudo dpkg -i griddb-c-client_5.0.0_amd64.deb
 
 ### GridDB node-api
 
-To connect to GridDB from Node.js. we should using `griddb-node-api`. This package is built using node-addon-api and there are two ways to using it:
+To connect to GridDB from Node.js. We should use `griddb-node-api`. This package is built using node-addon-api, and there are two ways to use it:
 
-1.Compile from the source code. This way is the right way if you need to use griddb-node-api on specific node.js version.
+1. Compile from the source code. This way is the right way if you need to use griddb-node-api on a specific node.js version.
 
 ```zsh
 git clone git@github.com:griddb/node-api.git
@@ -123,25 +123,25 @@ cd node-api
 npm install
 ```
 
-if there is an error message like this
+If there is an error message like this
 
 ```zsh
 gyp ERR! stack Error: not found: make
 ```
 
-that's means you should install the `build-essentials` package in Ubuntu and if everything success you will get a file, `griddb.node` and then you need to include it in `NODE_PATH`
+That means you should install the `build-essentials` package in Ubuntu, and if everything success you will get a file, `griddb.node`, and then you need to include it in `NODE_PATH`
 
 ```zsh
 export NODE_PATH=$(pwd)
 ```
 
-2.Install the npm package `griddb-node-api` directly into our project.
+2. Install the npm package `griddb-node-api` directly into our project.
 
 ```zsh
 pnpm install griddb-node-api
 ```
 
-We will use the second way for our project because it's simpler and we use Node 18 LTS.
+We will use the second way for our project because it's simpler, and we use Node 18 LTS.
 
 ## VSCode
 
@@ -153,13 +153,13 @@ Ok. That's a long setup before we code the application itself, but it's necessar
 
 ## Directory Project Structure
 
-We use `pnpm` instead of npm because `pnpm` is storage efficient and support workspaces. We will create monorepo that hold server and client codes.
+We use `pnpm` instead of npm because `pnpm` is storage efficient and supports workspaces. We will create a monorepo that holds server and client codes.
 
 _Why monorepo?_
 
-because it's good for the future development if you want to add another collaborator. Everyone will working on the same code base.
+Because it's good for future development, if you want to add another collaborator, everyone will be working on the same code base.
 
-Start the project by create a directory for the monorepo
+Start the project by creating a directory for the monorepo
 
 ```zsh
 mkdir world-population
@@ -167,7 +167,7 @@ cd world-population
 pnpm init
 ```
 
-then create `packages` directory that will hold our `server` and `client` projects.
+Then create `packages` directory that will hold our `server` and `client` projects.
 
 ```zsh
 mkdir packages
@@ -191,14 +191,14 @@ This tree structure might be typical of a Node.js project that has separate clie
 ├── .gitignore
 ├── package.json
 ├── packages
-│   ├── server
-│   └── client
+│   ├── server
+│   └── client
 └── pnpm-workspaces.yaml
 ```
 
 ## Let's Code
 
-First we initialize the server project and install the main npm packages.
+First, we initialize the server project and install the main npm packages.
 
 ```sh
 cd packages/server
@@ -209,20 +209,20 @@ pnpm --filter server install griddb-node-api express ws puppeteer
 
 ### Data Extraction
 
-This project use data from Worldometers.
+This project uses data from Worldometers.
 
-> Worldometers, is a website that provides real-time statistics on various topics, including world population, government and economics, society and media, the environment, food, water, energy, and health.
+> Worldometers is a website that provides real-time statistics on various topics, including world population, government and economics, society and media, the environment, food, water, energy, and health.
 
 There are a few ways to get data from a website:
 
 1. By using their API.
 2. By scrapping the website.
 
-Unfortunately, Worldometers does not provide API, so our last option is to scrap the website. One thing to note is Worldometers has dynamic data, meaning they provide real-time data. You cannot use JavaScript libraries such as Cheerio for data extraction. The best choice is to use Puppeteer to get such dynamic content.
+Unfortunately, Worldometers does not provide API, so our last option is to scrap the website. One thing to note is Worldometers have dynamic data, meaning they provide real-time data. You cannot use JavaScript libraries such as Cheerio for data extraction. The best choice is to use Puppeteer to get such dynamic content.
 
 > Puppeteer can be more resource-intensive as it launches a headless browser instance to render web pages. However, it offers more capabilities, such as handling dynamic content and user interactions.
 
-There are two endpoint URLs that will provide us with the data. One is for the total world population and the second is for total world population by country.
+There are two endpoint URLs that will provide us with the data. One is for the total world population, and the second is for the total world population by country.
 
 - https://www.worldometers.info/world-population/
 - https://www.worldometers.info/world-population/population-by-country/
@@ -268,9 +268,87 @@ The data returned by `fetchWorldPopulationData` function is simply a JavaScript 
 }
 ```
 
-The code for data extraction of world population by country, is in the repository project. The output will be an array
+The code for data extraction of world population by country is in the repository project. The output will be an array, so it's so easy to process.
+
+![world-pop-by-country](/assets/images/world-pop-by-country.png)
 
 ## Data Store
+
+We will use both types of containers for our project, time-series, and collection container. Time series for storing world population data and the collection container for storing world population data by country.
+
+As with any other database, we need to connect to it first. On GridDB we need to connect to the cluster. You can see the cluster configuration at
+
+```zsh
+/var/lib/gridstore/conf/gs_cluster.json
+```
+
+Make sure that the port is the value of the transaction key.
+
+```js
+const initStore = async () => {
+  const factory = griddb.StoreFactory.getInstance();
+  try {
+    // Connect to GridDB Cluster
+    const store = await factory.getStore({
+      host: "127.0.0.1",
+      port: 10001,
+      clusterName: "myCluster",
+      username: "admin",
+      password: "admin",
+    });
+    return store;
+  } catch (e) {
+    throw e;
+  }
+};
+```
+
+After that, we need to create a container to store our data. The `initContainer()` function provides information about the container's schema, including the names and data types of its columns.
+
+```js
+function initContainer() {
+  const conInfo = new griddb.ContainerInfo({
+    name: containerName,
+    columnInfoList: [
+      ["timestamp", griddb.Type.TIMESTAMP],
+      ["value", griddb.Type.DOUBLE],
+    ],
+    type: griddb.ContainerType.TIME_SERIES,
+  });
+
+  return conInfo;
+}
+```
+
+Please note that the `initContainer()` function will not create a container. The GridDB API that does that is `putContainer()`
+
+```js
+async function createContainer(store, conInfo) {
+  try {
+    const timeSeriesDB = await store.putContainer(conInfo);
+    return timeSeriesDB;
+  } catch (err) {
+    console.error(err);
+    throw err;
+  }
+}
+```
+
+### How to Store the Data
+
+Store the data is pretty easy. Get the container connection, then use `put()` to save the data into the GridDB container.
+
+```js
+db.put(data);
+```
+
+`db` is the connection reference that is returned by `createConnection()` function.
+
+The important thing to note for this project is the data should be stored periodically.
+
+_How to do that?_
+
+The simplest way to extract data periodically is using JavaScript native function, `setInterval()`.
 
 [^1]: https://ubuntu.com/blog/ubuntu-wsl-enable-systemd
 [^2]: https://github.com/nodesource/distribution
