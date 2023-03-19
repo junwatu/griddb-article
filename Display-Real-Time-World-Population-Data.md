@@ -145,7 +145,7 @@ We will use the second way for our project because it's simpler and we use Node 
 
 As stated earlier, we use OS Ubuntu 20.04 on WSL Windows 11. To code from Windows, we use Visual Studio Code because it has a remarkable [remote WSL plugin](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-wsl)
 
-![vscode-remote](vscode-remote.png)
+![vscode-remote](assets/images/vscode-remote.png)
 
 Ok. That's a long setup before we code the application itself, but it's necessary so our development environment is transparent.
 
