@@ -2,7 +2,7 @@
 
 ## What We Will Build?
 
-![world-population](assets/images/world-map.png)
+![world-population](assets/images/world-population-map.gif)
 
 This blog will teach you how to create a web-based map displaying world population data. The data is extracted from [worldometers](https://www.worldometers.info/) using React, Mapbox GL JS, Node.js, and GridDB. The world map will display the top 10 countries with the most population data.
 
@@ -401,13 +401,13 @@ We need to display the latest data with the latest time stamp. We can use SQL qu
 SELECT * FROM [containerName] ORDER BY timestamp DESC LIMIT 1
 ```
 
-Every time the
-
 ## Deliver Data to the Web Client
 
 We use WebSocket to deliver data to the project web client, built with React and Mapbox.
 
-WebSocket is the optimal choice for applications requiring intensive data usage because it enables real-time, bidirectional communication between the client and server. WebSocket allows for efficient data transfer and minimizes latency, which is essential in data-intensive applications where continuous updates and rapid responsiveness are crucial.
+_Why WebSocket?_
+
+> WebSocket is the optimal choice for applications requiring intensive data usage because it enables real-time, bidirectional communication between the client and server. WebSocket allows for efficient data transfer and minimizes latency, which is essential in data-intensive applications where continuous updates and rapid responsiveness are crucial.
 
 This snippet code shows us how the world population data is saved to and queried from GridDB and then sent it to the web client via WebSocket `ws`.
 
@@ -436,14 +436,16 @@ clients.forEach((client) => {
 });
 ```
 
-> In this project we use [ws](https://github.com/websockets/ws) for WebSocket and [express.js](http://expressjs.com/) for HTTP server.
+In this project we use [ws](https://github.com/websockets/ws) for WebSocket and [express.js](http://expressjs.com/) for HTTP server.
 
-## React + Mapbox GL JS
+## Web Client React + Mapbox GL JS
 
 There are so many tools today for creating React-based applications. [Vite](https://vitejs.dev/) is a next-generation front-end tool. It offers enhanced speed, supports ESM, and React. Making it a standout choice.
 
 ```zsh
 pnpm create vite
+cd client
+pnpm install
 ```
 
 The command will ask you a few questions and make sure to choose JavaScript and React. The source code for web client is live inside the folder `packages/client`.
@@ -466,13 +468,22 @@ The command will ask you a few questions and make sure to choose JavaScript and 
 └── vite.config.js
 ```
 
-There are not much to change in the files or directory that created by Vite, except `App.jsx` and `index.css` files.
+There are not much to change in the files or directories that created by Vite, except `App.jsx` and `index.css` files.
+
+`App.jsx` is the place where we code our react component and ui for Mapbox. There are only 2 components One is `sidebar` to show the world total population and the second is `map-container` to display the world map and label for each countries total population.
+
+```html
+<div className="App">
+  <div className="sidebar">World Population: {worldPopulation}</div>
+  <div ref="{mapContainer}" className="map-container" />
+</div>
+```
 
 ### Mapbox GL JS
 
-Mapbox GL JS is a JavaScript library for vector maps on the web. Its performance, real-time styling, and interactivity features set the bar for anyone building fast and immersive web maps.
+[Mapbox GL JS](https://www.mapbox.com/mapbox-gljs) is a JavaScript library for vector maps on the web. Its performance, real-time styling, and interactivity features set the bar for anyone building fast and immersive web maps.
 
-Add [Mapbox GL JS](https://www.mapbox.com/mapbox-gljs) to our client-side application.
+Add Mapbox GL JS to our client-side application.
 
 ```zsh
 pnpm install mapbox-gl
@@ -500,16 +511,36 @@ ws.addEventListener("message", (event) => {
 });
 ```
 
-`updateLabels(data)` will update every country's label in the top 10 world population.
+`updateLabels(data)` function will update every country's label in the top 10 world population.
 
-React UI to render the data is ridicilously simple.
+![country map label](/assets/images/country-map-label.png)
 
-```html
-<div className="App">
-  <div className="sidebar">World Population: {worldPopulation}</div>
-  <div ref="{mapContainer}" className="map-container" />
-</div>
+### React
+
+With React we scan build component easily. For this project we use it for creating sidebar.
+
+![sidebar](/assets/images/sidebar.png)
+
+This UI show the total world population. By using React `useState`, every data updates from WebSocket will trigger and render a new data on sidebar.
+
+```javascript
+const [worldPopulation, setWorldPopulation] = useState(0);
+
+//
+
+ws.addEventListener("message", (event) => {
+  const data = JSON.parse(event.data);
+
+  if (data[0].country) {
+    console.log("country", data);
+    updateLabels(data);
+  } else {
+    setWorldPopulation(data[0].population);
+  }
+});
 ```
+
+Conceptually, this project appears straightforward. However, the implementation of a web application to visualize global population data using Mapbox, Node.js, and GridDB with real-time live data integration and live UI updates presents a more complex challenge. The real-world nature of the data and the dynamic aspects of the application add multiple layers of complexity, making it a non-trivial task to execute effectively.
 
 [^1]: https://ubuntu.com/blog/ubuntu-wsl-enable-systemd
 [^2]: https://github.com/nodesource/distribution
