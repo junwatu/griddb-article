@@ -4,7 +4,7 @@
 
 ![world-population](assets/images/world-population-map.gif)
 
-This post will teach you how to create a web-based map displaying world population data. The data is extracted from [worldometers](https://www.worldometers.info/) using React, Mapbox GL JS, Node.js, and GridDB. The world map will display the top 10 countries with the most population data.
+This post will show you how to create a web-based map displaying world population data. The data is extracted from [worldometers](https://www.worldometers.info/) using React, Mapbox GL JS, Node.js, and GridDB. The world map will display the top 10 countries with the most population data.
 
 ## The Development Flow
 
@@ -22,13 +22,15 @@ The data will be extracted at regular intervals and then stored in the GridDB da
 
 We will use Node.js to code the server-side application server.
 
-> Why Node.js? JavaScript is the lingua franca for full-stack application development, so it's the obvious choice.
+_Why Node.js?_
 
-The application server we make is API-based, and Node.js will interact with GridDB for data storage, handle retrieval data from worldometers, and handle requests and responses from the client UI.
+> JavaScript is the lingua franca for full-stack application development, so it's the obvious choice.
+
+The application server we make is WebSocket-based, and Node.js will interact with GridDB for data storage, handle retrieval data from worldometers, and handle requests and responses from the client UI.
 
 ## Front-end Development
 
-We use React.js to create the user interface. To display the world population data visually, we'll use Mapbox GL JS, a powerful mapping library. This library enables the creation of interactive, customizable maps. We'll integrate Mapbox GL JS with our React application to render a world map with markers or overlays representing the population data.
+We use React.js to create the user interface and to display the world population data visually, we'll use Mapbox GL JS, a powerful mapping library. This library enables the creation of interactive, customizable maps. We'll integrate Mapbox GL JS with our React application to render a world map with labels representing the population data.
 
 ## Prerequisite
 
@@ -49,6 +51,8 @@ This type of container is similar to a traditional relational database. The data
 This container is designed explicitly for managing time-series data, a sequence of data points indexed by time. Each record in a TimeSeries container has a timestamp, which serves as its unique key, and the data in this container is "append only" except upon deletion if requested.
 
 ### Installation
+
+To install GridDB on WSL there are a few things that we should know.
 
 ⚠️ GridDB deb package uses `systemd`, but Ubuntu 20.04 on WSL 2 Windows 11 uses `SysVinit`, so you need to enable `systemd` on Ubuntu WSL by editing the file `/etc/wsl.conf` (create it if this file doesn't exist)
 
@@ -101,6 +105,8 @@ Mar 16 18:56:13 GenAI gridstore[314]: [ OK ]
 Mar 16 18:56:13 GenAI systemd[1]: Started GridDB database server..
 ```
 
+No need to start GridDB manually because on every OS reboot, this service will go up.
+
 ## Node.js
 
 To install[^2] Node.js LTS, follow the commands below
@@ -119,7 +125,7 @@ sudo dpkg -i griddb-c-client_5.0.0_amd64.deb
 
 ### GridDB node-api
 
-To connect to GridDB from Node.js. We should use `griddb-node-api`. This package is built using node-addon-api, and there are two ways to use it:
+To connect to GridDB from Node.js, we should use `griddb-node-api`. This package is built using node-addon-api, and there are two ways to use it:
 
 1. Compile from the source code. This way is the right way if you need to use griddb-node-api on a specific node.js version.
 
@@ -163,7 +169,7 @@ We use `pnpm` instead of npm because `pnpm` is storage efficient and supports wo
 
 _Why monorepo?_
 
-Because it's good for future development, if you want to add another collaborator, everyone will be working on the same code base.
+> Because it's good for future development, if you want to add another collaborator, everyone will be working on the same code base.
 
 Start the project by creating a directory for the monorepo
 
@@ -181,7 +187,7 @@ mkdir paclages\data-server
 mkdir packages\client
 ```
 
-`pnpm` handling project workspaces by reading the config from `pnpm-workspaces.yaml`
+`pnpm` handling project workspaces by reading the config from `pnpm-workspaces.yaml`, so you need to create it and fill with the content below.
 
 ```yaml
 # pnpm-workspaces.yaml
@@ -190,7 +196,7 @@ packages:
   - "packages/*
 ```
 
-This tree structure might be typical of a Node.js project that has separate client and server codebases, organized as packages within a monorepo, and managed with the `pnpm` package manager.
+This tree structure might be typical of a Node.js project that has separate client and server codebases. Organized as packages within a monorepo and managed with the `pnpm` package manager.
 
 ```sh
 .
@@ -204,7 +210,7 @@ This tree structure might be typical of a Node.js project that has separate clie
 
 ## Let's Code
 
-First, we initialize the server project and install the main npm packages.
+The first thing to do is initialize the server project and install the main npm packages.
 
 ```sh
 cd packages/server
@@ -219,12 +225,14 @@ This project uses data from Worldometers.
 
 > Worldometers is a website that provides real-time statistics on various topics, including world population, government and economics, society and media, the environment, food, water, energy, and health.
 
-There are a few ways to get data from a website:
+And there are a few ways to get data from a website:
 
 1. By using their API.
 2. By scrapping the website.
 
-Unfortunately, Worldometers does not provide API, so our last option is to scrap the website. One thing to note is Worldometers have dynamic data, meaning they provide real-time data. You cannot use JavaScript libraries such as Cheerio for data extraction. The best choice is to use Puppeteer to get such dynamic content.
+Unfortunately, Worldometers does not provide API, so our last option is to scrap the website.
+
+One thing to note is Worldometers have dynamic data, meaning they provide real-time data. You cannot use JavaScript libraries such as Cheerio for data extraction. The best choice is to use Puppeteer to get such dynamic content.
 
 > Puppeteer can be more resource-intensive as it launches a headless browser instance to render web pages. However, it offers more capabilities, such as handling dynamic content and user interactions.
 
@@ -274,21 +282,23 @@ The data returned by `fetchWorldPopulationData` function is simply a JavaScript 
 }
 ```
 
-The code for data extraction of world population by country is in the repository project. The output will be an array, so it's so easy to process.
+The code for data extraction of world population by country is in the repository project.
+
+The output will be an array, with keys: `country` name, country `coordinate` and the `population`.
 
 ![world-pop-by-country](/assets/images/world-pop-by-country.png)
 
 ## Data Store
 
-We will use both types of containers for our project, time-series and collection container. Time series for storing world population data and the collection container for storing world population data by country.
+We will use time-series containers for storing world population data. As with any other database, we need to connect to it first. On GridDB, we need to connect to the cluster.
 
-As with any other database, we need to connect to it first. On GridDB, we need to connect to the cluster. You can see the cluster configuration at
+You can see the cluster configuration at
 
 ```zsh
 /var/lib/gridstore/conf/gs_cluster.json
 ```
 
-Make sure that the port is the value of the transaction key.
+And make sure that the port we put in the code is the value of the transaction key because there are a few ports there.
 
 ```js
 const initStore = async () => {
@@ -326,7 +336,7 @@ function initContainer() {
 }
 ```
 
-Please note that the `initContainer()` function will not create a container. The GridDB API that does that is `putContainer()`
+Please note that the `initContainer()` function will not create a container. To create a container, GridDB API provide us with `putContainer()` function.
 
 ```js
 async function createContainer(store, conInfo) {
@@ -342,7 +352,7 @@ async function createContainer(store, conInfo) {
 
 ### How to Store the Data
 
-Store the data is pretty easy. Get the container connection, then use `put()` to save the data into the GridDB container.
+Store the data is pretty easy. First, get the container connection, then use `put()` to save the data into the GridDB container.
 
 ```js
 db.put(data);
@@ -365,11 +375,11 @@ function updateClientsWithWorldPopulationDataPeriodically(clients) {
 updateClientsWithWorldPopulationDataPeriodically(wss.clients);
 ```
 
-The default time to extract data is set by variable `worldDataUpdateTime` which is 5 second.
+The default time to extract data is set by variable `worldDataUpdateTime` which is 5 second. Means that, every 5 second we update the data.
 
 ## Read Data from GridDB
 
-GridDB supports SQL, so you can use raw SQL to retrieve the data. It is pretty simple. By using `query()` and `fetch()` we can easily get the data based on a SQL query.
+GridDB supports SQL, so you can use raw SQL to retrieve the data. By using `query()` and `fetch()` we can easily get the data based on a SQL query.
 
 ```js
 async function queryAll(db) {
@@ -395,7 +405,7 @@ async function queryAll(db) {
 }
 ```
 
-We need to display the latest data with the latest time stamp. We can use SQL queries to achieve this.
+For the projet purposes, it need to display the latest data with the latest time stamp. We can use SQL queries to achieve this.
 
 ```sql
 SELECT * FROM [containerName] ORDER BY timestamp DESC LIMIT 1
@@ -441,6 +451,8 @@ In this project, we use [ws](https://github.com/websockets/ws) for WebSocket and
 ## Web Client React + Mapbox GL JS
 
 There are so many tools today for creating React-based applications. [Vite](https://vitejs.dev/) is a next-generation front-end tool. It offers enhanced speed, supports ESM, and React. Making it a standout choice.
+
+To create a new frontend project using Vite.
 
 ```zsh
 pnpm create vite
