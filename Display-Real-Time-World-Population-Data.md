@@ -1,6 +1,12 @@
-# Visualize Global Population Data with Mapbox, Node.js, and GridDB: A Step-by-Step Guide
+# Visualize Global Population Data with Mapbox, Node.js, and GridDB
 
-This blog will show you how to display world population data from [worldometers](https://www.worldometers.info/) using React, Mapbox GL JS, Node.js, and GridDB.
+## What We Will Build?
+
+![world-population](assets/images/world-map.png)
+
+This blog will teach you how to create a web-based map displaying world population data. The data is extracted from [worldometers](https://www.worldometers.info/) using React, Mapbox GL JS, Node.js, and GridDB. The world map will display the top 10 countries with the most population data.
+
+## The Development Flow
 
 ![main_poject_flow](assets/images/project-diagram.svg)
 
@@ -8,7 +14,7 @@ The development flow for this project can be breakdown into a few steps:
 
 ## Data Acquisition
 
-First, we need to get real-time data from [worldometers](https://www.worldometers.info/). This can be done by scrapping the website or using API and then getting the data that we need.
+First, we need to get real-time data from [worldometers](https://www.worldometers.info/). We can get the data by scrapping the website or using API and then getting the needed data.
 
 The data will be extracted at regular intervals and then stored in the GridDB database. The data stored can be used for further analysis, prediction, reporting, etc.
 
@@ -24,7 +30,7 @@ The application server we make is API-based, and Node.js will interact with Grid
 
 We use React.js to create the user interface. To display the world population data visually, we'll use Mapbox GL JS, a powerful mapping library. This library enables the creation of interactive, customizable maps. We'll integrate Mapbox GL JS with our React application to render a world map with markers or overlays representing the population data.
 
-## Setup
+## Prerequisite
 
 Before we code the application, we need to set up the software and tools for development. We use Ubuntu 20.04 on WSL 2 on Windows 11 OS.
 
@@ -65,7 +71,7 @@ Then start wsl again with the command.
 wsl
 ```
 
-To install GridDB follow the installation instruction on [https://docs.griddb.net/latest/gettingstarted/using-apt/#install-with-apt-get](https://docs.griddb.net/latest/gettingstarted/using-apt/#install-with-apt-get).
+To install GridDB, follow the installation instruction on [https://docs.griddb.net/latest/gettingstarted/using-apt/#install-with-apt-get](https://docs.griddb.net/latest/gettingstarted/using-apt/#install-with-apt-get).
 
 Run GridDB and check if the service is running. Use this command
 
@@ -73,7 +79,7 @@ Run GridDB and check if the service is running. Use this command
 sudo systemctl status gridstore
 ```
 
-And if eveything ok you will get a message like this
+And if everything ok you will get a message like this.
 
 ```zsh
 ● gridstore.service - GridDB database server.
@@ -97,7 +103,7 @@ Mar 16 18:56:13 GenAI systemd[1]: Started GridDB database server..
 
 ## Node.js
 
-To install[^2] Node.js LTS follow the commands below
+To install[^2] Node.js LTS, follow the commands below
 
 ```zsh
 curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash - &&\
@@ -151,7 +157,7 @@ As stated earlier, we use OS Ubuntu 20.04 on WSL Windows 11. To code from Window
 
 Ok. That's a long setup before we code the application itself, but it's necessary so our development environment is transparent.
 
-## Directory Project Structure
+## Project Structure Directory
 
 We use `pnpm` instead of npm because `pnpm` is storage efficient and supports workspaces. We will create a monorepo that holds server and client codes.
 
@@ -222,7 +228,7 @@ Unfortunately, Worldometers does not provide API, so our last option is to scrap
 
 > Puppeteer can be more resource-intensive as it launches a headless browser instance to render web pages. However, it offers more capabilities, such as handling dynamic content and user interactions.
 
-There are two endpoint URLs that will provide us with the data. One is for the total world population, and the second is for the total world population by country.
+Two endpoint URLs will provide us with the data. One is for the total world population, and the second is for the total world population by country.
 
 - https://www.worldometers.info/world-population/
 - https://www.worldometers.info/world-population/population-by-country/
@@ -274,9 +280,9 @@ The code for data extraction of world population by country is in the repository
 
 ## Data Store
 
-We will use both types of containers for our project, time-series, and collection container. Time series for storing world population data and the collection container for storing world population data by country.
+We will use both types of containers for our project, time-series and collection container. Time series for storing world population data and the collection container for storing world population data by country.
 
-As with any other database, we need to connect to it first. On GridDB we need to connect to the cluster. You can see the cluster configuration at
+As with any other database, we need to connect to it first. On GridDB, we need to connect to the cluster. You can see the cluster configuration at
 
 ```zsh
 /var/lib/gridstore/conf/gs_cluster.json
@@ -344,11 +350,101 @@ db.put(data);
 
 `db` is the connection reference that is returned by `createConnection()` function.
 
-The important thing to note for this project is the data should be stored periodically.
+The important thing to note for this project is the data should be stored periodically. The simplest way to do this is by using JavaScript native function, `setInterval()`.
 
-_How to do that?_
+```js
+function updateClientsWithWorldPopulationDataPeriodically(clients) {
+  updateClientsWithWorldPopulationData(clients);
+  setTimeout(
+    () => updateClientsWithWorldPopulationDataPeriodically(clients),
+    worldDataUpdateTime
+  );
+}
 
-The simplest way to extract data periodically is using JavaScript native function, `setInterval()`.
+// Call the function to start the periodic updates
+updateClientsWithWorldPopulationDataPeriodically(wss.clients);
+```
+
+The default time to extract data is set by variable `worldDataUpdateTime` which is 5 second.
+
+## Read Data from GridDB
+
+GridDB supports SQL, so you can use raw SQL to retrieve the data. It is pretty simple. By using `query()` and `fetch()` we can easily get the data based on a SQL query.
+
+```js
+async function queryAll(db) {
+  const query = db.query(
+    `SELECT * FROM ${containerName} ORDER BY timestamp DESC LIMIT 1`
+  );
+
+  try {
+    const rowset = await query.fetch();
+    const results = [];
+
+    while (rowset.hasNext()) {
+      const row = rowset.next();
+      const rowData = { timestamp: `${row[0]}`, population: row[1] };
+      results.push(rowData);
+    }
+
+    return results;
+  } catch (err) {
+    console.log(err);
+    throw err;
+  }
+}
+```
+
+We need to display the latest data with the latest time stamp. We can use SQL queries to achieve this.
+
+```sql
+SELECT * FROM [containerName] ORDER BY timestamp DESC LIMIT 1
+```
+
+Every time the
+
+## Deliver Data to the Web Client
+
+We use WebSocket to deliver data to the project web client, built with React and Mapbox.
+
+WebSocket is the optimal choice for applications requiring intensive data usage because it enables real-time, bidirectional communication between the client and server. WebSocket allows for efficient data transfer and minimizes latency, which is essential in data-intensive applications where continuous updates and rapid responsiveness are crucial.
+
+This snippet code shows us how the world population data is saved to and queried from GridDB and then sent it to the web client via WebSocket `ws`.
+
+```javascript
+const worldPopData = [worldPopulation.timestamp, worldPopulation.population];
+await GridDB.insert(worldPopData, timeSeriesDb);
+
+const result = await GridDB.queryAll(timeSeriesDb);
+
+const jsonArray = result.map((item) => {
+  return {
+    timestamp: item.timestamp.toString(),
+    population: item.population,
+  };
+});
+
+// client is WebSocket client
+clients.forEach((client) => {
+  if (client.readyState === WebSocket.OPEN) {
+    try {
+      client.send(JSON.stringify(jsonArray));
+    } catch (error) {
+      console.error("Error sending data to client:", error);
+    }
+  }
+});
+```
+
+> In this project we use [ws](https://github.com/websockets/ws) for WebSocket and [express.js](http://expressjs.com/) for HTTP server.
+
+## React + Mapbox GL JS
+
+There are so many tools today for creating React-based applications. [Vite](https://vitejs.dev/), a next-generation front-end tool, offers enhanced speed and supports ESM, modern JavaScript module system and React, making it a standout choice.
+
+```
+pnpm vite
+```
 
 [^1]: https://ubuntu.com/blog/ubuntu-wsl-enable-systemd
 [^2]: https://github.com/nodesource/distribution
