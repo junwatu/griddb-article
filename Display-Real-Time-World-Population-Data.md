@@ -4,7 +4,7 @@
 
 ![world-population](assets/images/world-population-map.gif)
 
-This blog will teach you how to create a web-based map displaying world population data. The data is extracted from [worldometers](https://www.worldometers.info/) using React, Mapbox GL JS, Node.js, and GridDB. The world map will display the top 10 countries with the most population data.
+This post will teach you how to create a web-based map displaying world population data. The data is extracted from [worldometers](https://www.worldometers.info/) using React, Mapbox GL JS, Node.js, and GridDB. The world map will display the top 10 countries with the most population data.
 
 ## The Development Flow
 
