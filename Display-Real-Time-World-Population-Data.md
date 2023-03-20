@@ -538,7 +538,7 @@ This UI shows the total world population. Using React `useState`, every data upd
 ```javascript
 const [worldPopulation, setWorldPopulation] = useState(0);
 
-//
+//...//
 
 ws.addEventListener("message", (event) => {
   const data = JSON.parse(event.data);
