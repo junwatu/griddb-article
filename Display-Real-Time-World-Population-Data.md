@@ -462,6 +462,8 @@ pnpm install
 
 The command will ask you a few questions and make sure to choose JavaScript and React. The source code for web client is live inside the folder `packages/client`.
 
+The client side project structure.
+
 ```zsh
 .
 ├── index.html
