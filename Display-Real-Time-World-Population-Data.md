@@ -225,10 +225,10 @@ This project uses data from Worldometers.
 
 > Worldometers is a website that provides real-time statistics on various topics, including world population, government and economics, society and media, the environment, food, water, energy, and health.
 
-And there are a few ways to get data from a website:
+To get data from a website there are a few ways we can use:
 
-1. By using their API.
-2. By scrapping the website.
+1. Using API
+2. Scrapping
 
 Unfortunately, Worldometers does not provide API, so our last option is to scrap the website.
 
