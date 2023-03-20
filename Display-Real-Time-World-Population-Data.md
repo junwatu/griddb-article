@@ -262,7 +262,7 @@ const fetchWorldPopulationData = async () => {
 };
 ```
 
-The data returned by `fetchWorldPopulationData` function is simply a JavaScript object
+The data returned by `fetchWorldPopulationData` function is simply a JavaScript object.
 
 ```js
 {
@@ -436,7 +436,7 @@ clients.forEach((client) => {
 });
 ```
 
-In this project we use [ws](https://github.com/websockets/ws) for WebSocket and [express.js](http://expressjs.com/) for HTTP server.
+In this project, we use [ws](https://github.com/websockets/ws) for WebSocket and [express.js](http://expressjs.com/) for HTTP server.
 
 ## Web Client React + Mapbox GL JS
 
@@ -457,20 +457,20 @@ The command will ask you a few questions and make sure to choose JavaScript and 
 ├── package.json
 ├── pnpm-lock.yaml
 ├── public
-│   └── vite.svg
+│   └── vite.svg
 ├── src
-│   ├── App.css
-│   ├── App.jsx
-│   ├── assets
-│   │   └── react.svg
-│   ├── index.css
-│   └── main.jsx
+│   ├── App.css
+│   ├── App.jsx
+│   ├── assets
+│   │   └── react.svg
+│   ├── index.css
+│   └── main.jsx
 └── vite.config.js
 ```
 
-There are not much to change in the files or directories that created by Vite, except `App.jsx` and `index.css` files.
+There is not much to change in the files or directories created by Vite, except `App.jsx` and `index.css` files.
 
-`App.jsx` is the place where we code our react component and ui for Mapbox. There are only 2 components One is `sidebar` to show the world total population and the second is `map-container` to display the world map and label for each countries total population.
+`App.jsx` is where we code our react component and UI for Mapbox. There are only two components. One is `sidebar` to show the total world population, and the second is `map-container` to display the world map and label each country's total population.
 
 ```html
 <div className="App">
@@ -489,14 +489,14 @@ Add Mapbox GL JS to our client-side application.
 pnpm install mapbox-gl
 ```
 
-Since modern browsers already support WebSocket natively, we don't need additional package to connect to our WebSocket server.
+Since modern browsers already support WebSocket natively, we don't need an additional package to connect to our WebSocket server.
 
 ```javascript
 const ws = new WebSocket("ws://localhost:3000");
 setSocket(ws);
 ```
 
-and to get the world population data, simply, just listen to `message` event
+And to get the world population data, just listen to `message` event
 
 ```javascript
 ws.addEventListener("message", (event) => {
@@ -517,11 +517,11 @@ ws.addEventListener("message", (event) => {
 
 ### React
 
-With React we scan build component easily. For this project we use it for creating sidebar.
+With React, we can build components easily. For this project, we use it for creating a sidebar.
 
 ![sidebar](/assets/images/sidebar.png)
 
-This UI show the total world population. By using React `useState`, every data updates from WebSocket will trigger and render a new data on sidebar.
+This UI shows the total world population. Using React `useState`, every data update from WebSocket will trigger and render new data on the sidebar.
 
 ```javascript
 const [worldPopulation, setWorldPopulation] = useState(0);
