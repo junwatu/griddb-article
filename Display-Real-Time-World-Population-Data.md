@@ -177,7 +177,7 @@ Then create `packages` directory that will hold our `server` and `client` projec
 
 ```zsh
 mkdir packages
-mkdir paclages\server
+mkdir paclages\data-server
 mkdir packages\client
 ```
 
@@ -197,7 +197,7 @@ This tree structure might be typical of a Node.js project that has separate clie
 ├── .gitignore
 ├── package.json
 ├── packages
-│   ├── server
+│   ├── data-server
 │   └── client
 └── pnpm-workspaces.yaml
 ```
@@ -440,10 +440,75 @@ clients.forEach((client) => {
 
 ## React + Mapbox GL JS
 
-There are so many tools today for creating React-based applications. [Vite](https://vitejs.dev/), a next-generation front-end tool, offers enhanced speed and supports ESM, modern JavaScript module system and React, making it a standout choice.
+There are so many tools today for creating React-based applications. [Vite](https://vitejs.dev/) is a next-generation front-end tool. It offers enhanced speed, supports ESM, and React. Making it a standout choice.
 
+```zsh
+pnpm create vite
 ```
-pnpm vite
+
+The command will ask you a few questions and make sure to choose JavaScript and React. The source code for web client is live inside the folder `packages/client`.
+
+```zsh
+.
+├── index.html
+├── node_modules
+├── package.json
+├── pnpm-lock.yaml
+├── public
+│   └── vite.svg
+├── src
+│   ├── App.css
+│   ├── App.jsx
+│   ├── assets
+│   │   └── react.svg
+│   ├── index.css
+│   └── main.jsx
+└── vite.config.js
+```
+
+There are not much to change in the files or directory that created by Vite, except `App.jsx` and `index.css` files.
+
+### Mapbox GL JS
+
+Mapbox GL JS is a JavaScript library for vector maps on the web. Its performance, real-time styling, and interactivity features set the bar for anyone building fast and immersive web maps.
+
+Add [Mapbox GL JS](https://www.mapbox.com/mapbox-gljs) to our client-side application.
+
+```zsh
+pnpm install mapbox-gl
+```
+
+Since modern browsers already support WebSocket natively, we don't need additional package to connect to our WebSocket server.
+
+```javascript
+const ws = new WebSocket("ws://localhost:3000");
+setSocket(ws);
+```
+
+and to get the world population data, simply, just listen to `message` event
+
+```javascript
+ws.addEventListener("message", (event) => {
+  const data = JSON.parse(event.data);
+
+  if (data[0].country) {
+    console.log("country", data);
+    updateLabels(data);
+  } else {
+    setWorldPopulation(data[0].population);
+  }
+});
+```
+
+`updateLabels(data)` will update every country's label in the top 10 world population.
+
+React UI to render the data is ridicilously simple.
+
+```html
+<div className="App">
+  <div className="sidebar">World Population: {worldPopulation}</div>
+  <div ref="{mapContainer}" className="map-container" />
+</div>
 ```
 
 [^1]: https://ubuntu.com/blog/ubuntu-wsl-enable-systemd
