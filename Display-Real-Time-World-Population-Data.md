@@ -574,7 +574,7 @@ npm start
 
 ![run-dev-project](/assets/images/run-world-population-project.gif)
 
-Open http://localhost:5173 in the browser to open the web map.
+Go to http://localhost:5173 in the browser to open the web map.
 
 [^1]: https://ubuntu.com/blog/ubuntu-wsl-enable-systemd
 [^2]: https://github.com/nodesource/distribution
