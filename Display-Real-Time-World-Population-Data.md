@@ -167,6 +167,12 @@ Ok. That's a long setup before we code the application itself, but it's necessar
 
 We use `pnpm` instead of npm because `pnpm` is storage efficient and supports workspaces. We will create a monorepo that holds server and client codes.
 
+To activate `pnpm` use `corepack` from Node.js
+
+```
+corepack prepare pnpm@7.30.0 --activate
+```
+
 _Why monorepo?_
 
 > Because it's good for future development, if you want to add another collaborator, everyone will be working on the same code base.
@@ -555,6 +561,20 @@ ws.addEventListener("message", (event) => {
 ```
 
 Conceptually, this project appears straightforward. However, the implementation of a web application to visualize global population data using Mapbox, Node.js, and GridDB with real-time live data integration and live UI updates presents a more complex challenge. The real-world nature of the data and the dynamic aspects of the application add multiple layers of complexity, making it a non-trivial task to execute effectively.
+
+## Run the Project
+
+To run the project go to the project [repository](). Clone the repository, install all the dependenciee and start it.
+
+```zsh
+pnpm install
+
+npm start
+```
+
+![run-dev-project](/assets/images/run-world-population-project.gif)
+
+Open http://localhost:5173 in the browser to open the web map.
 
 [^1]: https://ubuntu.com/blog/ubuntu-wsl-enable-systemd
 [^2]: https://github.com/nodesource/distribution
