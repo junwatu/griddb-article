@@ -189,7 +189,7 @@ cd world-population
 pnpm init
 ```
 
-Then create `packages` directory that will hold our `data-server` and `client` projects.
+Then create `packages` directory that will hold our project codes. Server code in `data-server` directory and client code in `client` directory.
 
 ```zsh
 mkdir packages
