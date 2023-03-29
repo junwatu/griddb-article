@@ -150,7 +150,7 @@ export NODE_PATH=$(pwd)
 2. Install the npm package `griddb-node-api` directly into our project.
 
 ```zsh
-pnpm install griddb-node-api
+npm install griddb-node-api
 ```
 
 We will use the second way for our project because it's simpler, and we use Node 18 LTS.
