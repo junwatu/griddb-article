@@ -6,6 +6,16 @@
 
 This post will show you how to create a web-based map displaying world population data. The data is extracted from [worldometers](https://www.worldometers.info/) and using React, Mapbox GL JS, Node.js, and GridDB to build the whole web-based map application. The world map will display the top 10 countries with the most population data.
 
+---
+
+**tl;dr**
+
+To execute the code and view the web-based map showcasing global population data, refer to the [**Run The Project**](#run-the-project) section of this post.
+
+However, if yo prefer to code alongside and understand the workings of the code, please continue reading.
+
+---
+
 ## The Development Flow
 
 ![main_poject_flow](assets/images/project-diagram.svg)
@@ -562,9 +572,11 @@ ws.addEventListener("message", (event) => {
 
 Conceptually, this project appears straightforward. However, the implementation of a web application to visualize global population data using Mapbox, Node.js, and GridDB with real-time live data integration and live UI updates presents a more complex challenge. The real-world nature of the data and the dynamic aspects of the application add multiple layers of complexity, making it a non-trivial task to execute effectively.
 
+<a id="run-the-project"></a>
+
 ## Run the Project
 
-To run the project go to the project [repository](). Clone the repository, install all the dependenciee and start it.
+To launch the project, visit the project's [repository](https://github.com/junwatu/griddb-codes). Clone the repository, ensure that you have Node.js version 18, install all required dependencies, and start the project.
 
 ```zsh
 corepack prepare pnpm@7.30.0 --activate
