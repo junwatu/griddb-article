@@ -8,9 +8,7 @@ This post will show you how to create a web-based map displaying world populatio
 
 **tl;dr**
 
-To execute the code and view the web-based map showcasing global population data, refer to the [**Run The Project**](#run-the-project) section of this post.
-
-However, if yo prefer to code alongside and understand the workings of the code, please continue reading.
+To execute the code and view the web-based map showcasing global population data, refer to the [**Run The Project**](#run-the-project) section of this post. However, if yo prefer to code alongside and understand the workings of the code, please continue reading.
 
 ## The Development Flow
 
