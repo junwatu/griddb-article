@@ -8,7 +8,7 @@ This post will show you how to create a web-based map displaying world populatio
 
 **tl;dr**
 
-To execute the code and view the web-based map showcasing global population data, refer to the [**Run The Project**](#run-the-project) section of this post. However, if yo prefer to code alongside and understand the workings of the code, please continue reading.
+To execute the code and view the web-based map showcasing global population data, refer to the [**Run The Project**](#run-the-project) section of this post. However, if you prefer to code alongside and understand the workings of the code, please continue reading.
 
 ## The Development Flow
 
@@ -193,7 +193,7 @@ Then create `packages` directory that will hold our `data-server` and `client` p
 
 ```zsh
 mkdir packages
-mkdir paclages\data-server
+mkdir packages\data-server
 mkdir packages\client
 ```
 
@@ -226,7 +226,7 @@ The first thing to do is initialize the server project and install the main npm 
 cd packages/data-server
 pnpm init
 cd ../../
-pnpm --filter server install griddb-node-api express ws puppeteer
+pnpm --filter data-server install griddb-node-api express ws puppeteer
 ```
 
 ### Data Extraction
@@ -573,6 +573,10 @@ Conceptually, this project appears straightforward. However, the implementation 
 To launch the project, visit the project's [repository](https://github.com/junwatu/griddb-codes). Clone the repository, ensure that you have Node.js version 18, install all required dependencies, and start the project.
 
 ```zsh
+git clone git@github.com:junwatu/griddb-codes.git
+
+cd griddb-codes
+
 corepack prepare pnpm@7.30.0 --activate
 
 pnpm install
