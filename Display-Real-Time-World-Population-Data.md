@@ -185,7 +185,7 @@ cd world-population
 pnpm init
 ```
 
-Then create `packages` directory that will hold our `server` and `client` projects.
+Then create `packages` directory that will hold our `data-server` and `client` projects.
 
 ```zsh
 mkdir packages
@@ -219,7 +219,7 @@ This tree structure might be typical of a Node.js project that has separate clie
 The first thing to do is initialize the server project and install the main npm packages.
 
 ```sh
-cd packages/server
+cd packages/data-server
 pnpm init
 cd ../../
 pnpm --filter server install griddb-node-api express ws puppeteer
