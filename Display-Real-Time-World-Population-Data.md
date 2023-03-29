@@ -567,6 +567,8 @@ Conceptually, this project appears straightforward. However, the implementation 
 To run the project go to the project [repository](). Clone the repository, install all the dependenciee and start it.
 
 ```zsh
+corepack prepare pnpm@7.30.0 --activate
+
 pnpm install
 
 npm start
