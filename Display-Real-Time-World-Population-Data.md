@@ -6,15 +6,11 @@
 
 This post will show you how to create a web-based map displaying world population data. The data is extracted from [worldometers](https://www.worldometers.info/) and using React, Mapbox GL JS, Node.js, and GridDB to build the whole web-based map application. The world map will display the top 10 countries with the most population data.
 
----
-
 **tl;dr**
 
 To execute the code and view the web-based map showcasing global population data, refer to the [**Run The Project**](#run-the-project) section of this post.
 
 However, if yo prefer to code alongside and understand the workings of the code, please continue reading.
-
----
 
 ## The Development Flow
 
